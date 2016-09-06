@@ -54,11 +54,13 @@ Easy to access
 
 
 
+
+
 Server Features
 
-Written in C++
+-Written in C++
 
-Using websocket/TCP
+-Using websocket/TCP
 
 Security
 
