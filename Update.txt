@@ -1,0 +1,361 @@
+------------v4.5------------
+Features Added:
+	* The game canvas should support Edge/Chrome
+	* Fix a small bug that can't go back to previous page on leaderboard scene
+Client:
+	* previous_page() function in scene.js been edited
+Server:
+	* No change
+Issues:
+	* Game canvas is not supported by IE
+	* No sure if the game canvas support firefox
+	* Need more stress test
+
+------------v4.4------------
+Features Added:
+	* Added hint when specifying Room Number
+	* Added name display on gameplay scene
+Client:
+	* In player.js draw() funciont, draw player's name if not empty
+	* In index/public_index.html, added hint for Room Name in session
+Server:
+	* No change
+Issues:
+	* The game scene canvas doesn't support IE/Edge currently, so best run the game with chrome
+	* Need more stress test
+
+------------v4.3------------
+Features Added:
+	* Version display on client
+	* Fix the issue player can walk on chain bomb
+	* Fix bug that player stuck on bomb 1/2 position (need more test)
+	* Fix issue on destoried blocks roll back
+Client:
+	* added version info to intro on index/public_index.html
+	* comment SendGameState() on bomberman.js
+	* change player movement algorithm
+Server:
+	* No change
+Issues:
+	* The game scene canvas doesn't support IE/Edge currently, so best run the game with chrome
+	* Need more stress test
+
+------------v4.2------------
+Features Added:
+	* Fix a bug can't type after returning to lobby from end game
+	* Added a public_index.html for connecting to public server
+Client:
+	* Using port 8080
+	* ShowLobby() function now enbale type message function
+Server:
+	* Using port 8080
+Issues:
+	* Player can walk on bomb when his inital position is on a bomb and all bombs are chained
+	* The game scene canvas doesn't support IE/Edge currently, so best run the game with chrome
+	* Need more stress test
+
+------------v4.1------------
+Features Added:
+	* Enhance smoothness on placing bomb
+	* Client player will no longer jitter on placing bomb
+	* Bomb position now is 100% synchronizated even in extremly lagged situation
+	* Bomb solid position now is 100% synchronizated while latency is <=1500ms
+Client:
+	* Change placing bomb alorigthm, use add_bomb function instead of the shitty released_bomb bool
+	* Delete the 1st safe check on bomb placing (no jitter on placing bomb)
+	* Stop SendGameState() on destroy players/block
+Server:
+	* No change
+Issues:
+	* Player can walk on bomb when his inital position is on a bomb and all bombs are chained
+	* The game scene canvas doesn't support IE/Edge currently, so best run the game with chrome
+	* Need more stress test
+
+------------v4.0------------
+Features Added:
+	* Added Leaderboard checking, no login needed
+	* Every 3secs host will sync his map
+	* Player place bomb will also send map update to sync
+Client:
+	* Added leaderboard.js
+	* Player can check leaderboard through intro scene
+Server:
+	* Added leaderboard handling
+	* Added leaderboard.txt
+Issues:
+	* High drop rate may result in bomb position desync, but the entire map will resync
+	* High latency may result in non-host player stuck in wall due to map update 
+	* The game scene canvas doesn't support IE/Edge currently, so best run the game with chrome
+	* Need more stress test
+
+------------v3.6------------
+Features Added:
+	* Game state now sync on each bomb explosion
+	* Fix a critical bug on duplicated bomb update message on 1+ game
+	* Fix a bug that player can't ready up the game after returning lobby
+	* Fix bomb powerup bug
+	* password in database.txt is been hased
+Client:
+	* Enhance Init() function
+	* Check careful before player place a bomb, player can't place multiple bombs on same location
+	* Each time bomb destory block, client send current game state for to synchronization instead of sync every 3secs from host
+	* send(`E) will be sent after game end
+	* return lobby from end scene now request playerinfo/session update from server
+Server:
+	* Added sha265.h and sha265.cpp
+	* private _decrypt_message function now hash user's passsword with sha265
+	* database.txt's password are all hased by sha265
+Issues:
+	* The game scene canvas doesn't support IE/Edge currently, so best run the game with chrome
+	* Need more stress test
+
+------------v3.5------------
+Features Added:
+	* Change the algorithm of latency estimating:
+		Now <PING> is sent & calculated every 3 secs
+		using F12 on console will not crash the server
+		With this be changed, the server should not crash often
+	* Bombs left from last game will not be displayed/explode after a new game
+
+Client:
+	* sending <PING> move to SendGameState() function, been called every 3 secs
+	* The end_back() on click function now clear all player's bombs array
+
+Server:
+	* No change
+
+Issues:
+	* The game scene canvas doesn't support IE/Edge currently, so best run the game with chrome
+	* Ping estimation display fine in home environment, need to test it in campus environment
+	* Need more stress test	
+
+------------v3.4------------
+Features Added:
+	* Change the algorithm of latency estimating, now it's accurate even go beyond 999ms
+	* Enhance game state synchronization, pass 2000+ms latency test
+
+Client:
+	* The host will send it's board.level state every 3 secs
+	* Caculate ping and sending only after receiving <PING>
+
+Server:
+	* Added handler to handle level update
+
+Issues:
+	* The ping estimating algorithm causing console lag, try not to use F12 debug
+		because it send/receiving too rapidly if latency is extremly
+		but it doesn't affect the gameplay
+	* Need more stress test	
+	
+------------v3.3------------
+Features Added:
+	* Handle latency up to 400+ ms without dc
+	* Make sure the game is synchronized in various latency
+	* Added ping estimation display, (not accurate if ping is > 999 ms)
+	* Prevent user to login instantly after dc which may potentially crash the server 
+		(wait 7-8 secs to enable connect button)
+	* Disconnection alert
+	* Fix a bug that not displaying ending if other player left
+
+Client:
+	* Change the algorithm of adding powerup for player
+		: now the client only detect its user's player's powerup, each client responsible to control and update their own player
+	* Change the algorithm of killing player by bomb
+		: simillar as power up 
+	* Added a CheckConnect function:
+		: be called every 1 sec to calculate ping
+	* Notify and return to intro after disconnect
+	* check_state now trun left player's alive state to false
+
+Server:
+	* Handle ping message
+	* Handle player death update forwarding
+	* Handle player power up update forwarding
+
+Issues:
+	* Need more stress test		
+
+------------v3.2.1------------
+Features Added:
+	* session and game scene bgm will player from begining
+	* fix the bug that destoried blocks can't be recovered
+
+Client:
+	* Set bgm play time to 0 each time they are pasued
+	* disable solid bomb on explosion instead of extinguishment
+	* Shrink the height of ending canvas
+
+Server:
+	* No change
+
+Issues:
+	* Need more stress test
+
+------------v3.2------------
+Features Added:
+	* Added ending scene
+	* joining section update
+Client:
+	* stop game scene animation
+	* isolate game canvas, add a new canvas for ending scene
+Server:
+	* update check ready function
+	* add an ending handler
+Issues:
+	* Need more stress test
+
+
+------------v3.1------------
+Features Added:
+	* Added function for host to invite player (host only)
+	* Player in the session scene could be invited
+	* Player not login or already in session can't be invited
+Client:
+	* Now can request invite/be invited updates
+Server:
+	* Handle host invite
+	* Detect if invited player is alredy in session
+	* Detect if session is already full when invited player decided to join
+Issues:
+	* Need more stress test
+	* End-game scene is still missing
+
+------------v3.0.2------------
+Features Added:
+	* Added bgm for session/lobby
+Client:
+	* Change background image
+	* Showing welcome_msg instead of session title
+	* Play session_bgm after succesful login
+Server:
+	* No change
+
+Issues:
+	* Need more stress test
+	* End-game scene is still missing
+
+------------v3.0.1------------
+Features Added:
+	* Fixed Bomb solid position synchronization
+Client:
+	* Set bomb positoion to be solid upon bomb releasing
+		instead of upon receiving bomb update from server
+	* Added RefreshMap() in bomberman.js update:
+		This function ensure no invisible wall left in the level
+Server:
+	* No change
+
+Issues:
+	* Need more stress test
+	* End-game scene is still missing
+	
+------------v3.0------------
+Features Added:
+	* Session now is supported, max at 9 sessions, each session supports 4 players at max
+	* Player now can create/join session
+	* Session could be provided with password verification
+	* The game can now at most support 36 players playing at the same time
+	* The game can be logged in at most 100 users currently
+
+Client:
+	* session.js added
+	* Session scene added
+	* Each session/room is represent by a bomb sprite
+	* Session with password will be displayed with a lock sprite
+	* Receiving scene updates from server
+
+Server:
+	* session.h/cpp added	
+	* Session handle added
+	* Session password verification added
+	* Passed 36 players stress test
+
+Issues:
+	* Need more stress test
+	* End-game scene is still missing
+	
+
+------------v2.4------------
+Features Added: (The multiplayer game scene now is fully supported)
+	* Smoothing player movement when he is overlapping with bomb
+	* Multi-bombs explosion handle
+Client:
+	* Send bomb position when player press 'space'
+	* Receive bomb position from server and place the bomb
+	* Not receiving exploding/extinguish update at all:
+		The client have full control of the bomb thread now
+	* Added slide movement on player/bomb overlapping
+Server:
+	* Not sending exploding/extinguish update to clients at all
+	* Delete the bomb explosion/extinguish thread from the server
+
+Issues:
+	* Missing game-end scene/handling
+	
+------------v2.2.1------------
+Features Added:
+	* Bomb is made to be solid
+	* Added a color for recognizing solid bomb area (for testing purpose)
+Client:
+	* Added bomb solid detection
+Server:
+	* No change
+Issues:
+	* v2.3 has movement bug, so roll back to v2.2
+	* Bomb power up is not working properly at the current state
+	* Missing game-end scene/handling
+
+------------v2.3------------
+Features Added:
+	* Backgroud/block/solid block sprites
+Client:
+	* Load/display new sprites for level
+Server:
+	* No change
+Issues:
+	* player movement bug
+	* Bomb power up is not working properly at the current state
+	* Missing game-end scene/handling
+
+------------v2.2------------
+***The gameplay scene now support multiplayer
+Features Added:
+	* Bomb synchronization
+	* Map synchronization
+	* Powerups synchronization
+Client:
+	* Host will send powerups board to server, other players will synchronize with host's powerups map
+	* send bomb position to server
+	* receive bomb position/explosion update from server
+Server:
+	* Bomb position handle
+	* Bomb explosion handle: added explosion thread, the server controls all bombs' explosion
+	* Powerups handle
+Issues:
+	* Player will see other player jitter when they drop a bomb
+	* Bomb power up is not working properly at the current state
+	* Missing game-end scene/handling
+
+------------v2.1------------
+Features Added:
+	* Plyaer position synchronization
+Client:
+	* Sending position update when key up
+	* Set idle animation for done-moving player
+
+Server:
+	* Added position handle: Once a player make a move(key down/up),
+				  server receive updates and tell every client.
+Issues:
+	* Player may see jitter when other player key up
+
+------------v2.0------------
+Features Added:
+	1. Plyaer direction synchronization
+Client:
+	1. Sending player direction update when key down
+	2. Making sure direction update will only update once while key down
+Server:
+	1. Added direction handle
+Issues:
+	1. Player's velocity is not synchronized

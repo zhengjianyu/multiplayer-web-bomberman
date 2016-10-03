@@ -1,0 +1,106 @@
+/* Communication symbols
+
+client -> server:
+	<PING> : ping
+	
+	^ : register username/password
+	> : username
+
+	[: creating a room request
+		username|roomname,password
+
+	]: joining a room request
+		username,room_id
+	]]: password verification
+		roomid+client_username,room_password
+
+	@: return to session
+
+	$: host send invite player request
+	$+: invited player accept invite: client_username, session_id
+	$-: invited player denny invite: session_id
+
+	`R : ready state
+	`S : start game
+	`E+/- : end game win/lose
+	
+
+	-----player direction-----
+	-down
+	-up
+	-left
+	-right
+	-stop_down
+	-stop_up
+	-stop_left
+	-stop_right
+
+	-----player position-----
+	&x,y
+
+	-----bomb position-----
+	*player_current_x,player_current_y
+
+	-----power_up update position-----
+	!playerid+x,y,powerup
+
+	-----player death update position-----
+	|playerid+x,y
+
+	; and : : empty/solid state update
+
+	<REQUESTINFO>: requesting playerinfo update from server
+	_rank: requesting displaying leaderboard info
+	_b : return to intro
+
+server -> client:
+	<PING> : ping
+	_: sending leaderboard info
+
+	^+ : account registered
+	^! : duplicated name warning
+
+	>+: give session entrance permission
+	>U: all sessions update (room_name,player_size,waiting,running,room_password)
+
+	>N: deny player(unregister username)
+	>P: deny player(incorrect password)
+	>M: deny player(multiple login)
+
+	]P: prompt for room_password
+	]-: deney lobby entrance due to no-matching password
+	
+	$<: Invite Error: user not found
+	$>: Invite Error: user is already in a session
+	$.: Asking confirmation: hostname,roomname
+	$#: Tell client session is full
+
+	@U(|): updating info of players, using | to split
+
+	`: tell host the game is ready to start
+	~S: tell every client to start game
+
+	-----player direction-----
+	-id+down
+	-id+up
+	-id+left
+	-id+right
+	-id+stop_down
+	-id+stop_up
+	-id+stop_left
+	-id+stop_right
+
+	-----player position-----
+	&playerid,x,y
+
+	-----bomb position-----
+	*clientid+player_current_x,player_current_y
+
+	-----powerup update position-----
+	!playerid+x,y,powerup
+
+	-----player death update position-----
+	|playerid+x,y
+
+	; and : : empty/solid state update
+*/
